@@ -10,12 +10,12 @@ module.exports = {
   networks: {
     develop: {
       host: '127.0.0.1',
-      port: 8545,
+      port: 9545,
       network_id: '*' // Match any network id
     },
     rinkeby: {
       provider: function() {
-        return new HDWalletProvider('switch current current usual mutual close awesome broccoli salon coast clutch knee', 'https://rinkeby.infura.io/v3/0c9165c8582f4f3abed7c07313d8ba7e')
+        return new HDWalletProvider('C02DD421E9E8A4D7EAAB06FA214B772B411157393ECBC0E1ABDD06E821E6BC3E', 'https://rinkeby.infura.io/v3/0c9165c8582f4f3abed7c07313d8ba7e')
       },
       network_id: '4',
       gas: 4500000,
@@ -24,10 +24,14 @@ module.exports = {
   },
   compilers: {
     solc: {
-      version: './node_modules/solc', // Version is managed in package.json as an NPM dependency.
-			optimizer: {
-				enabled: true,
-			},
+      version: "0.4.24",
+      docker: true,
+      settings: {
+        optimizer: {
+          enabled: true,
+          runs: 200
+        }
+      }
     }
   }
 }

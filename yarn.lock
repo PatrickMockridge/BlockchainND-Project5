@@ -5098,10 +5098,10 @@ onetime@^2.0.0:
   dependencies:
     mimic-fn "^1.0.0"
 
-openzeppelin-solidity@^2.0.0:
-  version "2.1.1"
-  resolved "https://registry.yarnpkg.com/openzeppelin-solidity/-/openzeppelin-solidity-2.1.1.tgz#a929b63f30846ff429354a510a719624d7f4abc2"
-  integrity sha512-kvVI/2n3oYfVYP53rUw+q6QNPlorwYRFaGu/Zs+TWFw2tKlnrz7UXh0UTWYd3Sfbq6eOo4XXnGv4bgcKguOrWg==
+openzeppelin-solidity@2.0.0:
+  version "2.0.0"
+  resolved "https://registry.yarnpkg.com/openzeppelin-solidity/-/openzeppelin-solidity-2.0.0.tgz#b45dddbdae090f89577598c1a7e7518df61b7ba2"
+  integrity sha512-SolpxQFArtiYnlSNg3dZ9sz0WVlKtPqSOcJkXRllaZp4+Lpfqz3vxF0yoh7g75TszKPyadqoJmU7+GM/vwh9SA==
 
 opn@^5.1.0:
   version "5.4.0"
