@@ -54,7 +54,7 @@ test
 **3.** Compile and migrate contracts to the local test network:
 ```bash
 compile
-migrate --reset --network develop # this will automatically target the development network as I already fixed its parameters in the config file truffle.js
+migrate --reset --network develop 
 ```
 __4.__ Set up Metamask to connect to local development network:
 - Set the Custom RPC to http://127.0.0.1:9545 under Custom RPC settings
