@@ -26,8 +26,21 @@ const createStar = async () => {
 }
 
 // Add a function lookUp to Lookup a star by ID using tokenIdToStarInfo()
+const lookUpStarByTokenId = async () => {
+  const instance = await StarNotary.deployed();
+  const tokenId = parseInt(document.getElementById("tokenId").value);
+  let starNameOf = await instance.lookUpTokenIdToStarInfo.call(tokenId, {from: account});
+  App.setStatusName("Star name for tokenId " + tokenId + " is: " + starNameOf);
+}
 
-//
+// Added function to transfer star from webapp
+const transferStarToken = async() => {
+  const instance = await StarNotary.deployed();
+  const starToBeTransferred = document.getElementById('starToBeTransferred').value;
+  const accountToBeSentTo = document.getElementById('accountToBeSentTo').value;
+  await instance.starTransfer(accountToBeSentTo, starToBeTransferred, {from: account});
+  alert('Star with tokenId ' + starToBeTransferred + ' has been sent to account:\n' + accountToBeSentTo);
+}
 
 const App = {
   start: function () {
