@@ -22,25 +22,17 @@ const createStar = async () => {
   const name = document.getElementById("starName").value;
   const id = document.getElementById("starId").value;
   await instance.createStar(name, id, {from: account});
-  App.setStatusOwner("New Star Owner is " + account + ".");
+  App.setStatus("New Star Owner is " + account + ".");
 }
 
 // Add a function lookUp to Lookup a star by ID using tokenIdToStarInfo()
-const lookUpStarByTokenId = async () => {
+const tokenIdToStarInfo = async () => {
   const instance = await StarNotary.deployed();
-  const tokenId = parseInt(document.getElementById("tokenId").value);
-  let starNameOf = await instance.lookUpTokenIdToStarInfo.call(tokenId, {from: account});
-  App.setStatusName("Star name for tokenId " + tokenId + " is: " + starNameOf);
+  const id = document.getElementById("starId2").value;
+  const name = await instance.lookUptokenIdToStarInfo(id, {from: account});
+  App.setStatus(`The name of the star with id ${id} is: ${name}`);
 }
-
-// Added extra function to transfer star from webapp
-const transferStarToken = async() => {
-  const instance = await StarNotary.deployed();
-  const starToBeTransferred = document.getElementById('starToBeTransferred').value;
-  const accountToBeSentTo = document.getElementById('accountToBeSentTo').value;
-  await instance.starTransfer(accountToBeSentTo, starToBeTransferred, {from: account});
-  alert('Star with tokenId ' + starToBeTransferred + ' has been sent to account:\n' + accountToBeSentTo);
-}
+//
 
 const App = {
   start: function () {
@@ -67,27 +59,18 @@ const App = {
     })
   },
 
-  setStatusOwner: function (message) {
-    const statusOwner = document.getElementById('statusOwner')
-    statusOwner.innerHTML = message
-  },
-
-  setStatusName: function (message) {
-    const statusName = document.getElementById('statusName')
-    statusName.innerHTML = message
+  setStatus: function (message) {
+    const status = document.getElementById('status')
+    status.innerHTML = message
   },
 
   createStar: function () {
     createStar();
   },
 
-  lookUpStarByTokenId: function() {
-    lookUpStarByTokenId();
+  tokenIdToStarInfo: function () {
+    tokenIdToStarInfo();
   },
-
-  transferStarToken: function() {
-    transferStarToken();
-  }
 
 }
 
