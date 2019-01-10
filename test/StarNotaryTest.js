@@ -18,7 +18,7 @@ contract('StarNotary', async (accs) => {
   it('lets user1 put up their star for sale', async() => {
     let user1 = accounts[1]
     let starId = 2;
-    let starPrice = web3.toWei(.01, "ether")
+    let starPrice = web3.utils.toWei(.01, "ether")
     await instance.createStar('awesome star', starId, {from: user1})
     await instance.putStarUpForSale(starId, starPrice, {from: user1})
     assert.equal(await instance.starsForSale.call(starId), starPrice)
@@ -28,7 +28,7 @@ contract('StarNotary', async (accs) => {
     let user1 = accounts[1]
     let user2 = accounts[2]
     let starId = 3
-    let starPrice = web3.toWei(.01, "ether")
+    let starPrice = web3.utils.toWei(.01, "ether")
     await instance.createStar('awesome star', starId, {from: user1})
     await instance.putStarUpForSale(starId, starPrice, {from: user1})
     let balanceOfUser1BeforeTransaction = web3.eth.getBalance(user1)
@@ -41,7 +41,7 @@ contract('StarNotary', async (accs) => {
     let user1 = accounts[1]
     let user2 = accounts[2]
     let starId = 4
-    let starPrice = web3.toWei(.01, "ether")
+    let starPrice = web3.utils.toWei(.01, "ether")
     await instance.createStar('awesome star', starId, {from: user1})
     await instance.putStarUpForSale(starId, starPrice, {from: user1})
     let balanceOfUser1BeforeTransaction = web3.eth.getBalance(user2)
@@ -53,7 +53,7 @@ contract('StarNotary', async (accs) => {
     let user1 = accounts[1]
     let user2 = accounts[2]
     let starId = 5
-    let starPrice = web3.toWei(.01, "ether")
+    let starPrice = web3.utils.toWei(.01, "ether")
     await instance.createStar('awesome star', starId, {from: user1})
     await instance.putStarUpForSale(starId, starPrice, {from: user1})
     let balanceOfUser1BeforeTransaction = web3.eth.getBalance(user2)
@@ -67,8 +67,8 @@ contract('StarNotary', async (accs) => {
 
   // 1) The token name and token symbol are added properly.
   it('The token name and token symbol are added properly', async() => {
-    assert.equal(await instance.name.call(), 'Star Token Udacity');
-    assert.equal(await instance.symbol.call(), 'STU');
+    assert.equal(await instance.name.call(), 'The Patrick Mockridge Blazing Amazing Supersaiyan Star Token');
+    assert.equal(await instance.symbol.call(), 'PMBASST');
   });
 
   // 2) 2 users can exchange their stars.
