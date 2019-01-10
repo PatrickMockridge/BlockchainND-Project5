@@ -23,7 +23,7 @@ contract('StarNotary', async (accs) => {
     let starPrice = web3.utils.toBN(starPriceWei)
     await instance.createStar('awesome star', starId, {from: user1})
     await instance.putStarUpForSale(starId, starPrice, {from: user1})
-    assert.equal(await instance.starsForSale.call(starId), starPrice)
+    assert.equal(await instance.starsForSale.call(starId), starPrice.toString())
   });
 
   it('lets user1 get the funds after the sale', async() => {
@@ -35,10 +35,13 @@ contract('StarNotary', async (accs) => {
     let starPrice = web3.utils.toBN(starPriceWei)
     await instance.createStar('awesome star', starId, {from: user1})
     await instance.putStarUpForSale(starId, starPrice, {from: user1})
-    let balanceOfUser1BeforeTransaction = web3.eth.getBalance(user1).toNumber()
+    let balanceOfUser1BeforeTransactionA = await web3.eth.getBalance(user1)
+    let balanceOfUser1BeforeTransactionB = web3.utils.toBN(balanceOfUser1BeforeTransactionA)
     await instance.buyStar(starId, {from: user2, value: starPrice})
-    let balanceOfUser1AfterTransaction = web3.eth.getBalance(user1).toNumber()
-    assert.equal(BigInt(balanceOfUser1BeforeTransaction.add(starPrice)), BigInt(balanceOfUser1AfterTransaction.toNumber()));
+    let balanceOfUser1AfterTransactionA = await web3.eth.getBalance(user1)
+    let balanceOfUser1AfterTransactionB = web3.utils.toBN(balanceOfUser1AfterTransactionA)
+    const expectedDiff = balanceOfUser1AfterTransactionB - balanceOfUser1BeforeTransactionB
+    assert.equal(expectedDiff, starPrice);
   });
 
   it('lets user2 buy a star, if it is put up for sale', async() => {
@@ -50,7 +53,6 @@ contract('StarNotary', async (accs) => {
     let starPrice = web3.utils.toBN(starPriceWei)
     await instance.createStar('awesome star', starId, {from: user1})
     await instance.putStarUpForSale(starId, starPrice, {from: user1})
-    let balanceOfUser1BeforeTransaction = web3.eth.getBalance(user2).toNumber()
     await instance.buyStar(starId, {from: user2, value: starPrice});
     assert.equal(await instance.ownerOf.call(starId), user2);
   });
@@ -64,11 +66,12 @@ contract('StarNotary', async (accs) => {
     let starPrice = web3.utils.toBN(starPriceWei)
     await instance.createStar('awesome star', starId, {from: user1})
     await instance.putStarUpForSale(starId, starPrice, {from: user1})
-    let balanceOfUser1BeforeTransaction = web3.eth.getBalance(user2).toNumber()
-    const balanceOfUser2BeforeTransaction = web3.eth.getBalance(user2).toNumber()
+    let balanceOfUser1BeforeTransaction = web3.eth.getBalance(user2)
+    const balanceOfUser2BeforeTransaction = await web3.eth.getBalance(user2)
     await instance.buyStar(starId, {from: user2, value: starPrice, gasPrice:0})
-    const balanceAfterUser2BuysStar = web3.eth.getBalance(user2).toNumber()
-    assert.equal(balanceOfUser2BeforeTransaction.sub(balanceAfterUser2BuysStar), starPrice);
+    const balanceAfterUser2BuysStar = await web3.eth.getBalance(user2)
+    const expectedDiff = balanceOfUser2BeforeTransaction - balanceAfterUser2BuysStar
+    assert.equal(expectedDiff, starPrice);
   });
 
   // Write Tests for:
