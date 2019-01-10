@@ -18,7 +18,9 @@ contract('StarNotary', async (accs) => {
   it('lets user1 put up their star for sale', async() => {
     let user1 = accounts[1]
     let starId = 2;
-    let starPrice = BigInt(web3.utils.toWei(.01, "ether").toString())
+    let amount = 0.01
+    let starPriceWei = web3.utils.toWei(amount.toString(), "ether")
+    let starPrice = web3.utils.toBN(starPriceWei)
     await instance.createStar('awesome star', starId, {from: user1})
     await instance.putStarUpForSale(starId, starPrice, {from: user1})
     assert.equal(await instance.starsForSale.call(starId), starPrice)
@@ -28,23 +30,27 @@ contract('StarNotary', async (accs) => {
     let user1 = accounts[1]
     let user2 = accounts[2]
     let starId = 3
-    let starPrice = BigInt(web3.utils.toWei(.01, "ether").toString())
+    let amount = 0.01
+    let starPriceWei = web3.utils.toWei(amount.toString(), "ether")
+    let starPrice = web3.utils.toBN(starPriceWei)
     await instance.createStar('awesome star', starId, {from: user1})
     await instance.putStarUpForSale(starId, starPrice, {from: user1})
-    let balanceOfUser1BeforeTransaction = web3.eth.getBalance(user1)
+    let balanceOfUser1BeforeTransaction = web3.eth.getBalance(user1).toNumber()
     await instance.buyStar(starId, {from: user2, value: starPrice})
-    let balanceOfUser1AfterTransaction = web3.eth.getBalance(user1)
-    assert.equal(balanceOfUser1BeforeTransaction.add(starPrice).toNumber(), balanceOfUser1AfterTransaction.toNumber());
+    let balanceOfUser1AfterTransaction = web3.eth.getBalance(user1).toNumber()
+    assert.equal(BigInt(balanceOfUser1BeforeTransaction.add(starPrice)), BigInt(balanceOfUser1AfterTransaction.toNumber()));
   });
 
   it('lets user2 buy a star, if it is put up for sale', async() => {
     let user1 = accounts[1]
     let user2 = accounts[2]
     let starId = 4
-    let starPrice = BigInt(web3.utils.toWei(.01, "ether").toString())
+    let amount = 0.01
+    let starPriceWei = web3.utils.toWei(amount.toString(), "ether")
+    let starPrice = web3.utils.toBN(starPriceWei)
     await instance.createStar('awesome star', starId, {from: user1})
     await instance.putStarUpForSale(starId, starPrice, {from: user1})
-    let balanceOfUser1BeforeTransaction = web3.eth.getBalance(user2)
+    let balanceOfUser1BeforeTransaction = web3.eth.getBalance(user2).toNumber()
     await instance.buyStar(starId, {from: user2, value: starPrice});
     assert.equal(await instance.ownerOf.call(starId), user2);
   });
@@ -53,13 +59,15 @@ contract('StarNotary', async (accs) => {
     let user1 = accounts[1]
     let user2 = accounts[2]
     let starId = 5
-    let starPrice = BigInt(web3.utils.toWei(.01, "ether").toString())
+    let amount = 0.01
+    let starPriceWei = web3.utils.toWei(amount.toString(), "ether")
+    let starPrice = web3.utils.toBN(starPriceWei)
     await instance.createStar('awesome star', starId, {from: user1})
     await instance.putStarUpForSale(starId, starPrice, {from: user1})
-    let balanceOfUser1BeforeTransaction = web3.eth.getBalance(user2)
-    const balanceOfUser2BeforeTransaction = web3.eth.getBalance(user2)
+    let balanceOfUser1BeforeTransaction = web3.eth.getBalance(user2).toNumber()
+    const balanceOfUser2BeforeTransaction = web3.eth.getBalance(user2).toNumber()
     await instance.buyStar(starId, {from: user2, value: starPrice, gasPrice:0})
-    const balanceAfterUser2BuysStar = web3.eth.getBalance(user2)
+    const balanceAfterUser2BuysStar = web3.eth.getBalance(user2).toNumber()
     assert.equal(balanceOfUser2BeforeTransaction.sub(balanceAfterUser2BuysStar), starPrice);
   });
 
